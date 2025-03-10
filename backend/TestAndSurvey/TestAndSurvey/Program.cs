@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TestAndSurvey.DataAccess;
@@ -11,9 +13,10 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin();
+        policy.WithOrigins("http://localhost:5173");
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
+        policy.AllowCredentials();
     });
 });
 
@@ -46,9 +49,29 @@ if (app.Environment.IsDevelopment())
     
     app.ApplyMigrations();
 }
+app.MapIdentityApi<SurvefyUser>();
+
+app.MapPost("/logout", async (SignInManager<SurvefyUser> signInManager) =>
+{
+    await signInManager.SignOutAsync();
+    return Results.Ok();
+}).RequireAuthorization();
+
+app.MapGet("/pingauth", (ClaimsPrincipal user) =>
+{
+    var email = user.FindFirstValue(ClaimTypes.Email);
+    return Results.Json(new { Email = email });
+}).RequireAuthorization();
+
+app.MapGet("/getCurUserId", (ClaimsPrincipal user) =>
+{
+    var id = user.FindFirstValue(ClaimTypes.NameIdentifier);
+    return Results.Json(new { id = id });
+}).RequireAuthorization();
+
 
 app.UseHttpsRedirection();
-app.MapIdentityApi<SurvefyUser>();
+
 
 app.UseCors();
 app.MapControllers();
