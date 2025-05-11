@@ -32,7 +32,11 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid password");
 
         var token = GenerateJwtToken(user);
-        return Ok(new { token });
+        
+        return Ok(new {
+            token,
+            userId = user.Id
+        });
     }
 
     [HttpPost("register")]
@@ -53,7 +57,7 @@ public class AuthController : ControllerBase
         }
 
         var token = GenerateJwtToken(user);
-        return Ok(new { token });
+        return Ok(new { token, userId = user.Id });
     }
 
     private string GenerateJwtToken(SurvefyUser user)

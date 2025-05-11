@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ public class NotesController(SurvefyDbContext dbContext) : ControllerBase
         return Ok();
     }
     
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] GetNotesRequest request, CancellationToken ct)
     {
