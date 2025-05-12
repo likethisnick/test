@@ -37,4 +37,21 @@ public class TemplateSurveysController(SurvefyDbContext dbContext) : ControllerB
 
         return Ok(new GetTemplateSurveysResponse(surveys));
     }
+    
+    [Authorize]
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAllSurveys(CancellationToken ct)
+    {
+        var surveys = await dbContext.TemplateSurvey
+            .OrderByDescending(s => s.CreatedOn)
+            .Select(s => new TemplateSurveyDto(
+                s.Id,
+                s.Name,
+                s.Description,
+                s.CreatedOn
+            ))
+            .ToListAsync(ct);
+
+        return Ok(new GetTemplateSurveysResponse(surveys));
+    }
 }
