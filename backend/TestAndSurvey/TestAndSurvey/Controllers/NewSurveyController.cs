@@ -1,5 +1,8 @@
 ﻿using System.Linq.Expressions;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestAndSurvey.Contracts;
@@ -10,41 +13,28 @@ namespace TestAndSurvey.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class NewSurveyController(SurvefyDbContext dbContext) : ControllerBase
+public class NewSurveyController(UserManager<SurvefyUser> userManager, IConfiguration config, SurvefyDbContext dbContext) : ControllerBase
 {
+    [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateSurveyRequest request, CancellationToken ct)
+    public async Task<IActionResult> CreateTemplateSurvey([FromBody] CreateTemplateSurveyRequest request, CancellationToken ct)
     {
-        var survey = new TemplateSurvey(request.Name, request.Description, request.CreatedOn, request.createdbyuserid);
-        
-        await dbContext.TemplateSurvey.AddAsync(survey, ct);
-        await dbContext.SaveChangesAsync(ct);
-        
-        return Ok();
-    }
-    
-    [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] GetNotesRequest request, CancellationToken ct)
-    {
-        /*var notesQuery = dbContext.TemplateSurvey
-            .Where(n => string.IsNullOrWhiteSpace(request.Search) ||
-                        n.Title.ToLower().Contains(request.Search.ToLower()));
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
 
-        Expression<Func<Note,object>> selectorKey = request.SortItem?.ToLower() switch
+        var newSurvey = new TemplateSurvey
         {
-            "date" => note => note.CreatedAt,
-            "title" => note => note.Title,
-            _ => note => note.Id
+            Id = Guid.NewGuid(),
+            CreatedByUserId = userId,
+            CreatedOn = DateTime.UtcNow,
+            Name = request.Name,
+            Description = request.Description
         };
-        
-        notesQuery = request?.SortOrder == "desc" 
-            ? notesQuery.OrderByDescending(selectorKey) 
-            : notesQuery.OrderBy(selectorKey);
 
-        var noteDtos = await notesQuery
-            .Select(n => new NoteDto(n.Id, n.Title, n.Description,n.CreatedAt))
-            .ToListAsync(ct);*/
-        
-        return Ok();
+        dbContext.TemplateSurvey.Add(newSurvey);
+        await dbContext.SaveChangesAsync(ct);
+
+        return Ok(new { newSurvey.Id });
     }
 }

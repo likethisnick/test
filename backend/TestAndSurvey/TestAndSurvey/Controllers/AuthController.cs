@@ -1,33 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using TestAndSurvey.Contracts;
 using TestAndSurvey.DataAccess;
 
+namespace TestAndSurvey.Controllers;
+
 [ApiController]
 [Route("auth")]
-public class AuthController : ControllerBase
+public class AuthController(UserManager<SurvefyUser> userManager, IConfiguration config)
+    : ControllerBase
 {
-    private readonly UserManager<SurvefyUser> _userManager;
-    private readonly IConfiguration _config;
-
-    public AuthController(UserManager<SurvefyUser> userManager, IConfiguration config)
-    {
-        _userManager = userManager;
-        _config = config;
-    }
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
-        var user = await _userManager.FindByEmailAsync(dto.Email);
+        var user = await userManager.FindByEmailAsync(dto.Email);
         if (user == null)
             return Unauthorized("User not found");
 
-        var valid = await _userManager.CheckPasswordAsync(user, dto.Password);
+        var valid = await userManager.CheckPasswordAsync(user, dto.Password);
         if (!valid)
             return Unauthorized("Invalid password");
 
@@ -48,7 +42,7 @@ public class AuthController : ControllerBase
             Email = dto.Email
         };
 
-        var result = await _userManager.CreateAsync(user, dto.Password);
+        var result = await userManager.CreateAsync(user, dto.Password);
 
         if (!result.Succeeded)
         {
@@ -68,7 +62,7 @@ public class AuthController : ControllerBase
             new Claim(JwtRegisteredClaimNames.Email, user.Email)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var jwt = new JwtSecurityToken(
