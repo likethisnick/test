@@ -9,7 +9,7 @@ public class SurvefyDbContext(DbContextOptions<SurvefyDbContext> options) : Iden
 {
     public DbSet<TemplateSurvey> TemplateSurvey => Set<TemplateSurvey>();
     public DbSet<Question> Question { get; set; }
-    public DbSet<QuestionOption> QuestionOption => Set<QuestionOption>();
+    public DbSet<QuestionOption> QuestionOption { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
