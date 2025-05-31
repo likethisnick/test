@@ -162,3 +162,7 @@ C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\obj\Debug\n
 C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\obj\Debug\net8.0\TestAndSurvey.Tests.pdb
 C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\obj\Debug\net8.0\TestAndSurvey.Tests.genruntimeconfig.cache
 C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\obj\Debug\net8.0\ref\TestAndSurvey.Tests.dll
+C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\alt\RiderProjects\backend\TestAndSurvey\TestAndSurvey.Tests\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll

@@ -12,7 +12,11 @@
   &lt;ProjectFile&gt;8D0D2AF2-A7FD-47CD-B921-89D57B1CAF8D/f:AuthControllerTests.cs&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b7a06fca_002Dfa62_002D46d5_002D970c_002D383da57289ac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from AuthControllerTests.cs #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;ProjectFile&gt;8D0D2AF2-A7FD-47CD-B921-89D57B1CAF8D/f:AuthControllerTests.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;ProjectFile&gt;8D0D2AF2-A7FD-47CD-B921-89D57B1CAF8D/f:AuthControllerTests.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;ProjectFile&gt;8D0D2AF2-A7FD-47CD-B921-89D57B1CAF8D/f:NewSurveyControllerTests.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;ProjectFile&gt;8D0D2AF2-A7FD-47CD-B921-89D57B1CAF8D/f:TemplateSurveysControllerTests.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d4eaa05d_002Df4d0_002D473c_002Dbeb4_002D33d451e12a92/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from AuthControllerTests.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;ProjectFile&gt;8D0D2AF2-A7FD-47CD-B921-89D57B1CAF8D/f:AuthControllerTests.cs&lt;/ProjectFile&gt;&#xD;
