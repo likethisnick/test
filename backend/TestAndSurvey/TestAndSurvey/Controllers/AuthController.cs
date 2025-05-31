@@ -6,14 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TestAndSurvey.Contracts;
 using TestAndSurvey.DataAccess;
+using TestAndSurvey.Services;
 
 namespace TestAndSurvey.Controllers;
 
 [ApiController]
 [Route("auth")]
-public class AuthController(UserManager<SurvefyUser> userManager, IConfiguration config)
+public class AuthController(UserManager<SurvefyUser> userManager, IConfiguration config, IJwtTokenService jwtTokenService)
     : ControllerBase
 {
+    private readonly IJwtTokenService _jwtTokenService = jwtTokenService;
+    
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
@@ -25,7 +28,7 @@ public class AuthController(UserManager<SurvefyUser> userManager, IConfiguration
         if (!valid)
             return Unauthorized("Invalid password");
 
-        var token = GenerateJwtToken(user);
+        var token = _jwtTokenService.GenerateJwtToken(user);
         
         return Ok(new {
             token,
@@ -50,7 +53,7 @@ public class AuthController(UserManager<SurvefyUser> userManager, IConfiguration
             return BadRequest(new { errors });
         }
 
-        var token = GenerateJwtToken(user);
+        var token = _jwtTokenService.GenerateJwtToken(user);
         return Ok(new { token, userId = user.Id });
     }
 
